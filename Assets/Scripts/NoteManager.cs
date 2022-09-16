@@ -32,6 +32,7 @@ public class NoteManager : MonoBehaviour {
     [SerializeField] GameObject noteObj;
 
     private Transform trans;
+    public float offset;
 
     void OnEnable() {
 
@@ -58,7 +59,7 @@ public class NoteManager : MonoBehaviour {
 
             GameObject note = Instantiate(noteObj, trans);
             float x = inputJson.notes[i].block*(3.0f/28.0f) - 0.375f; // Calulated using interpolation (0, -4/8) -> (7, 3/8)
-            float z = NotesTime[i] * NotesSpeed;
+            float z = NotesTime[i] * NotesSpeed + offset;
             note.transform.position = new Vector3(x, 0.55f, z);
             note.gameObject.GetComponent<Note>().speed = NotesSpeed;
 
