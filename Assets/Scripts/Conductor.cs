@@ -2,29 +2,49 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+public class ChartInfo {
+    public string name;
+    public uint maxBlock;
+    public float BPM;
+    public float offset;
+    public NoteInfo[] notes;
+}
+
+[System.Serializable]
+public class NoteInfo {
+    public uint LPB;
+    public uint num;
+    public uint block;
+    public uint type;
+    public NoteInfo[] notes;
+}
+
 public class Conductor : MonoBehaviour {
 
     // Make this a singleton class
-    private static  readonly Conductor instance = new Conductor();
-    public  static Conductor Instance {
+    private static Conductor instance;
+    public static Conductor Instance {
         get {
-            return instance;
+            return instance ?? (instance = (new GameObject("Conductor").AddComponent<Conductor>()));
         }
     }
 
-    public float bpm;
-    public float crotchet; // Time duration of a beat
-    public float offset;
-    public float songPosition;
+    public ChartInfo chartInfo;
 
     void Start() {
-        
+        Load("fifthPierrot");
     }
 
     void Update() {
         
     }
 
+    void Load(string songName) {
+        
+        var rawChart = Resources.Load<TextAsset>(songName).ToString();
+        chartInfo = JsonUtility.FromJson<ChartInfo>(rawChart);
 
+    }
 
 }
